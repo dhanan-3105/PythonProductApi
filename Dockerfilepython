@@ -1,0 +1,8 @@
+from python
+copy *.py /code/
+copy login.html /code/templates/
+run pip install mysql flask pymysql
+run pip install Flask-Extension flask-mysql
+workdir /code
+expose 80
+cmd python /code/main.py

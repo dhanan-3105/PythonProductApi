@@ -1,0 +1,61 @@
+<doctype html>
+<title> Product Mastero - Python Flask</title>
+<form action="" method="post">
+<select id="myselect" name="myselect">
+</select>
+<textarea id="txtjson" name="txtjson" rows="20" cols="100" style="display: none ;" class="textboxmulti">
+     placeholder for Product Data </textarea>
+</textarea>
+</form>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+$( document ).ready(function() {
+ console.log ("In ready...");    
+  $.ajax({
+        url:'http://192.168.99.100:8002/load',
+        type:'GET',
+        crossDomain: true,
+        dataType: 'json',
+        success: function( json ) {
+            alert(json);
+            for (let x of json)
+              {
+              console.log(x);
+              $('#myselect').append(`<option value=${x}>${x}</option>`);
+              }
+        },
+     error: function(xhr, textStatus, error) {
+           alert(xhr+error); }
+    });
+});
+$("#myselect").change(function() {
+ $("#txtjson").val("");
+   id= $(this).val();
+  console.log("selected is : "+id);
+  jsondata={
+  prodname: id 
+  }; 
+  alert(jsondata);
+  console.log(jsondata);
+   $.ajax({
+        url:'http://192.168.99.100:8002/search',
+        type:'GET',
+        processData: true,
+        crossDomain: true,
+        data: {"prodname": id},
+        dataType: 'json',
+        success: function(result) {
+            
+            xdata=JSON.stringify(result);
+            $("#txtjson").val(xdata);
+            $("#txtjson").css('display','block');
+          
+            
+        },
+     error: function(xhr, textStatus, error) {
+           alert("error at "+xhr+error+textStatus); }
+    });
+
+});
+</script>
